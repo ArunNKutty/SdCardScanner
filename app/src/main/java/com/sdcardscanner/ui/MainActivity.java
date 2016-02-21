@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sdcardscanner.R;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mFrequentFiles;
     private TextView mAverageFileSize;
     private double mFileSize;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mFrequentFiles = (ListView) findViewById(R.id.frequentFiles);
         mShareActionButton = (FloatingActionButton) findViewById(R.id.share);
         mfloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        mProgressBar =(ProgressBar) findViewById(R.id.progress);
         mfloatingActionButton.setSelected(true);
         mfloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
                 if (mfloatingActionButton.isSelected()) {
                     mfloatingActionButton.setImageResource(android.R.drawable.ic_media_pause);
                     mfloatingActionButton.setSelected(false);
+                    mProgressBar.setVisibility(View.VISIBLE);
                     startScanningService(true);
 
                 } else {
                     mfloatingActionButton.setImageResource(android.R.drawable.ic_media_play);
                     mfloatingActionButton.setSelected(true);
+                    mProgressBar.setVisibility(View.GONE);
                     startScanningService(false);
                 }
             }
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, files);
         mFilesListView.setAdapter(adapter);
         ListUtils.setListViewHeightBasedOnChildren(mFilesListView);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void displayFrequentFileExtensions(List<Map.Entry<String, Integer>> commonFileExtensions) {
